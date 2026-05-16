@@ -94,7 +94,9 @@ def parse_table_response(data: dict, headers_override: list = None) -> list:
 @app.get("/health")
 async def health():
     return {"ok": True, "service": "appfolio", "domain": APPFOLIO_DOMAIN}
-
+@app.get("/debug-secret")
+async def debug_secret():
+    return {"secret_length": len(API_SECRET), "secret_first3": API_SECRET[:3], "raw": os.environ.get("SERVICE_SECRET", "NOT_FOUND")}
 @app.get("/tenants", dependencies=[Depends(verify_secret)])
 async def get_tenants(page: int = 1):
     cookies = get_cookies()
